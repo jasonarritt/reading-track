@@ -45,23 +45,23 @@ const resolvers = {
     },
     saveBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        const user = await User.findOneAndUpdate(
+        const userBooks = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { savedBooks: bookId } },
           { new: true, runValidators: true }
         );
-        return user;
+        return userBooks;
       }
       throw new AuthenticationError("Not logged in!");
     },
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        const user = await User.findOneAndUpdate(
+        const userBooks = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { savedBooks: bookId } },
           { new: true, runValidators: true }
         );
-        return user;
+        return userBooks;
       }
       throw new AuthenticationError("Not logged in!");
     },
