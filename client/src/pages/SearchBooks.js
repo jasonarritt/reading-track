@@ -13,6 +13,7 @@ import Auth from "../utils/auth";
 import { searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 
+// Import useMutation hook and SAVE_BOOK mutation
 import { useMutation } from "@apollo/client";
 import { SAVE_BOOK } from "../utils/mutations";
 
@@ -25,6 +26,7 @@ const SearchBooks = () => {
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
+  // Use SAVE_BOOK mutation to save book data to ApolloServer
   const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
@@ -78,11 +80,8 @@ const SearchBooks = () => {
     }
 
     try {
-      await saveBook({ variables: bookToSave });
-
-      // if (!response.ok) {
-      //   throw new Error("something went wrong!");
-      // }
+      // use saveBook mutation
+      const { data } = await saveBook({ variables: bookToSave });
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
@@ -96,6 +95,7 @@ const SearchBooks = () => {
       <Jumbotron fluid className="text-light bg-dark">
         <Container>
           <h1>Search for Books!</h1>
+          {error ? `There is an error with Apollo Client ${error}!` : null}
           <Form onSubmit={handleFormSubmit}>
             <Form.Row>
               <Col xs={12} md={8}>
