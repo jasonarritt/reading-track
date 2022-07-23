@@ -25,7 +25,7 @@ Reading Track does not require installation. Users can engage with the Reading T
 
 Upon starting/navigating to the Reading Track application, the user is presented with a page that allows them to enter a search term for finding a book. From the search results page, the user can select a book to save to their reading list.
 
-![](./images/BookSearch.png)
+![](./images/BookSearch-Screenshot.png)
 
 ## License
 
