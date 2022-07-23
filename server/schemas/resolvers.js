@@ -3,7 +3,9 @@ const { User } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
+  // Query resolvers
   Query: {
+    // Me query
     me: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id })
@@ -12,9 +14,11 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in!");
     },
+    // Users query
     users: async () => {
       return User.find({}).select("-__v -password").populate("savedBooks");
     },
+    // User query
     user: async (parent, args) => {
       return User.findOne({
         args,
@@ -24,7 +28,9 @@ const resolvers = {
     },
   },
 
+  // Mutation resolvers
   Mutation: {
+    // Add user mutation
     addUser: async (parent, args) => {
       const user = await User.create(args);
 
@@ -32,6 +38,7 @@ const resolvers = {
 
       return { token, user };
     },
+    // Login mutation
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -49,6 +56,7 @@ const resolvers = {
 
       return { token, user };
     },
+    // Save book mutation
     saveBook: async (parent, args, context) => {
       if (context.user) {
         const user = await User.findOneAndUpdate(
@@ -65,6 +73,7 @@ const resolvers = {
 
       throw new AuthenticationError("Not logged in!");
     },
+    // Remove book mutation
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         const user = await User.findOneAndUpdate(
